@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+  sensor-sim:
+    build:
+      context: .
+      dockerfile: Dockerfile.sensor
+    depends_on:
+      - redis
+      - mongo
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ["python", "sensor_sim.py"]
